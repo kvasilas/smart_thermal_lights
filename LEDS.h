@@ -5,8 +5,8 @@
 using namespace std;
 
 void blink_led(int led, int time){
-  digitialWrite(led, HIGH);
+  digitalWrite(led, HIGH);
   delay(time);
-  digitialWrite(led, LOW);
-  delay(time)
+  digitalWrite(led, LOW);
+  delay(time);
 }
