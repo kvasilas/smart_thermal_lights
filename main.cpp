@@ -2,6 +2,7 @@
 
 #include "GPIO.h"
 #include "pipTag.h"
+#include "timer.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ int main(){
   }
 
   // Start with al lights off
-  allOff()
+  allOff();
 
   unsigned long seconds = 15;
   timer t;
@@ -59,7 +60,7 @@ int main(){
 
   while(RUNNING){
 
-    result = myPip.readTag(&sd, ID_1);
+    myPip.readTag(&sd, ID_1);
 
     /*
     From testing:
@@ -81,7 +82,7 @@ int main(){
         if(t.elapsedTime() >= seconds) {
           if(on){
             allOff();
-            beep(buzzer);
+            beep(BUZZER);
             on=false;
           }
         }
@@ -105,7 +106,7 @@ int main(){
         if(t.elapsedTime() >= seconds) {
           if(on){
             allOff();
-            beep(buzzer);
+            beep(BUZZER);
             on=false;
           }
         }

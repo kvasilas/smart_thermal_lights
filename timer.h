@@ -1,5 +1,7 @@
 #include <time.h>
 
+using namespace std;
+
 class timer {
 	private:
 		unsigned long begTime;
