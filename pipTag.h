@@ -104,7 +104,8 @@ map<usb_dev_handle*, uint8_t> versions;
 class PipReader{
 public:
   int pip_light = 0;
-  int pip_temp = 0;;
+  int pip_temp = 0;
+  int pip_humid = 0;
 
   SampleData sd;
 

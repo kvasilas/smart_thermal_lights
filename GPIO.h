@@ -27,6 +27,10 @@ void setINOUTS(){
 	pinMode(RED_BTN, INPUT);
 	pinMode(WHITE_BTN, INPUT);
 	pinMode(BLUE_BTN, INPUT);
+	
+	pullUpDnControl(RED_BTN, PUD_DOWN);
+	pullUpDnControl(WHITE_BTN, PUD_DOWN);
+	pullUpDnControl(BLUE_BTN, PUD_DOWN);
 }
 
 void ledOn(int led){

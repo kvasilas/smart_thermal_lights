@@ -44,9 +44,10 @@ int main(){
   // Start with al lights off
   allOff();
 
-  unsigned long seconds = 15;
+  unsigned long seconds = 1;
   timer t;
   bool on = false;
+  bool det = false;
   int buttonMode = 1;
 
   PipReader myPip;
@@ -59,8 +60,19 @@ int main(){
   cout << "Starting Program" << endl;
 
   while(RUNNING){
-
+    comeTome:
     myPip.readTag(&sd, ID_1);
+    if(buttonMode != 1){
+      //cout << t.elapsedTime() << endl;
+      if(t.elapsedTime() >= seconds) { 
+        if(on){
+          cout << "timer finished" << endl;
+          allOff();
+          beep(BUZZER);
+          on=false;
+          }
+      }
+    } 
 
     /*
     From testing:
@@ -75,17 +87,20 @@ int main(){
           whichLED = determineLED(myPip.pip_temp - 333);
           ledOn(whichLED);
         }
+        else{
+        allOff();
+        }
         break;
       }
       // If someone moves in front of motion sensor, turn lights on according to temp
       case 2:{
-        if(t.elapsedTime() >= seconds) {
+        /*if(t.elapsedTime() >= seconds) {
           if(on){
             allOff();
             beep(BUZZER);
             on=false;
           }
-        }
+        }*/
 
         if(checkMotion(MOTION)){
           if(!on){
@@ -95,49 +110,49 @@ int main(){
             on=true;
           }
           cout << "detected" << endl;
+          delay(5000);
           t.start();
-          delay(18000);
         }
 
         break;
       }
       // If someone moves in front of motion sensor and light is below threshold, turn lights on according to temp
       case 3:{
-        if(t.elapsedTime() >= seconds) {
-          if(on){
-            allOff();
-            beep(BUZZER);
-            on=false;
-          }
-        }
-
-        if(checkMotion(MOTION)){
+        if(checkMotion(MOTION) && myPip.pip_light < lightThreshold){
           if(!on){
-            if (myPip.pip_light < lightThreshold){
               whichLED = determineLED(myPip.pip_temp - 333);
               ledOn(whichLED);
               beep(BUZZER);
               on=true;
             }
-          }
-          cout << "detected" << endl;
-          t.start();
-          delay(18000);
+            cout << "detected" << endl;
+            delay(5000);
+            t.start();
+
         }
         break;
       }
       default: 
         break;
     }
-
+    
     if(digitalRead(RED_BTN)==HIGH){
-      buttonMode =1;
+      if(buttonMode != 1){
+        cout << "red" << endl;
+        buttonMode =1;
+      }
     }
     else if(digitalRead(WHITE_BTN)==HIGH){
-      buttonMode =2;
+      if(buttonMode != 2){
+        buttonMode =2;
+        cout << "white" << endl;
+      }
     }
     else if(digitalRead(BLUE_BTN)==HIGH){
-      buttonMode=3;
+      if(buttonMode != 3){
+        buttonMode=3;
+        cout << "blue" << endl;
+      }
     }
 
     //cout << "Light: " << myPip.pip_light << " and Temp: " << myPip.pip_temp << endl;
